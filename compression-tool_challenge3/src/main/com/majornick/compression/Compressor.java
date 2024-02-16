@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Compressor {
@@ -72,22 +73,25 @@ public class Compressor {
         frequencies = readOccurrences();
         HuffmanTree huffmanTree = new HuffmanTree(frequencies);
         ArrayList<CharacterRoad> bitRep = getBitRep(huffmanTree);
-        String compressedFilePath = changeExtension(filename);
-        writeInFile(compressedFilePath);
+
+        LinkedHashMap<Character, String> codes = getCanonicalCodes(bitRep);
         System.out.println(bitRep);
+        String compressedFilePath = changeExtension(filename);
+        writeInFile(compressedFilePath, codes);
     }
 
-    private void writeInFile(String path) {
+
+    private void writeInFile(String path, LinkedHashMap<Character, String> codes) {
         try (FileWriter fileWriter = new FileWriter(path)) {
-            writeFrequencyMap(fileWriter);
+            writeCanonicalCodesMap(fileWriter, codes);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         }
     }
 
-    private void writeFrequencyMap(FileWriter fileWriter) {
-        frequencies.forEach((key, value) -> {
+    private void writeCanonicalCodesMap(FileWriter fileWriter, LinkedHashMap<Character, String> codes) {
+        codes.forEach((key, value) -> {
             try {
                 fileWriter.write(
                         String.format("%s : %s\n", key, value)
@@ -114,9 +118,28 @@ public class Compressor {
         return frequencies;
     }
 
+    private LinkedHashMap<Character, String> getCanonicalCodes(ArrayList<CharacterRoad> bitRep) {
+        LinkedHashMap<Character, String> codes = new LinkedHashMap<>();
+        if (bitRep.isEmpty()) {
+            return codes;
+        }
+        int size = bitRep.get(0).roadLength;
+        codes.put(bitRep.get(0).c, "0".repeat(size));
+        int current = 0;
+        for (int i = 1; i < bitRep.size(); i++) {
+            current++;
+            int shift = bitRep.get(i).roadLength - bitRep.get(i - 1).roadLength;
+            current <<= shift;
+            codes.put(bitRep.get(i).c, Integer.toBinaryString(current));
+        }
+        return codes;
+    }
+
+
     public int getCharacterFrequency(char a) {
         return frequencies.getOrDefault(a, 0);
     }
+
 
     private static class CharacterRoad {
         public char c;
@@ -125,13 +148,6 @@ public class Compressor {
         public CharacterRoad(Character c, int roadLength) {
             this.c = c;
             this.roadLength = roadLength;
-        }
-
-        @Override
-        public String toString() {
-            return "{" + c +
-                    ", '" + roadLength + '\'' +
-                    '}';
         }
     }
 }
