@@ -1,25 +1,14 @@
 package main.com.majornick.compression.huffman;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class HuffmanTree {
     private HuffmanNode root;
 
     public HuffmanTree(Map<Character, Integer> frequencyMap) {
         buildTree(frequencyMap);
-    }
-
-    public static void main(String[] args) {
-        HashMap<Test, Integer> test = new HashMap<>();
-        Test l = new Test();
-        l.setValue("abc");
-        test.put(l, 5);
-        System.out.println(test.get(l));
-        l.setLength(5);
-
-        System.out.println(test.get(l));
-
-
     }
 
     public HuffmanNode getRoot() {
@@ -49,40 +38,6 @@ public class HuffmanTree {
         root = queue.poll();
     }
 
-    public static class Test {
-        String value;
-        Integer length;
 
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Test test = (Test) o;
-            return Objects.equals(value, test.value) && Objects.equals(length, test.length);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value, length);
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public void setLength(Integer length) {
-            this.length = length;
-        }
-
-
-    }
 
 }
