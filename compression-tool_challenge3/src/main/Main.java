@@ -1,11 +1,11 @@
 package main;
 
 
-import main.com.majornick.compression.Compressor;
+import main.com.majornick.compression.Decompressor;
 
 public class Main {
     public static void main(String[] args) {
-        Compressor compressor = new Compressor("./test.txt");
+        Decompressor compressor = new Decompressor("./test.huff");
 
     }
 }

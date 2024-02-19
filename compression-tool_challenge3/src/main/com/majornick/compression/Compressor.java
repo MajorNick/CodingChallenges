@@ -126,10 +126,11 @@ public class Compressor {
         }
     }
 
-    private void writeCanonicalCodesMap(FileWriter fileWriter, LinkedHashMap<Integer, String> codes) {
+    private void writeCanonicalCodesMap(FileWriter fileWriter, LinkedHashMap<Integer, String> codes) throws IOException {
+        fileWriter.write(String.format("extension : %s\n", filename.substring(filename.lastIndexOf('.'))));
         codes.forEach((key, value) -> {
             try {
-                fileWriter.write(String.format("%s : %s\n", key, value));
+                fileWriter.write(String.format("%d : %s\n", key, value));
             } catch (IOException e) {
                 System.err.println(e.getMessage());
                 System.exit(0);
