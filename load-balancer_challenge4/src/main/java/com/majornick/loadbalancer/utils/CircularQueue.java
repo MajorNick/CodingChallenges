@@ -1,12 +1,14 @@
 package com.majornick.loadbalancer.utils;
 
-import java.util.ArrayDeque;
+import java.util.concurrent.ArrayBlockingQueue;
 
 
-public class CircularQueue<E> extends ArrayDeque<E> {
-    @Override
-    public E poll() {
+public class CircularQueue<E> extends ArrayBlockingQueue<E> {
+    public CircularQueue(int capacity) {
+        super(capacity);
+    }
 
+    public E pollAndReturn() {
         E e = super.poll();
         if (e == null) {
             return null;
@@ -14,4 +16,6 @@ public class CircularQueue<E> extends ArrayDeque<E> {
         super.add(e);
         return e;
     }
+
+
 }

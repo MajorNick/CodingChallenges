@@ -1,6 +1,7 @@
 package com.majornick.loadbalancer;
 
 import com.majornick.loadbalancer.utils.CircularQueue;
+import models.Server;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -10,7 +11,10 @@ import javax.servlet.annotation.WebListener;
 public class BalancerInit implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        CircularQueue<String> queue = new CircularQueue<>();
+        CircularQueue<Server> queue = new CircularQueue<>(10);
+        queue.add(new Server("localhost:8081/"));
+        queue.add(new Server("localhost:8082/"));
+        servletContextEvent.getServletContext().setAttribute("queue", queue);
     }
 
     @Override

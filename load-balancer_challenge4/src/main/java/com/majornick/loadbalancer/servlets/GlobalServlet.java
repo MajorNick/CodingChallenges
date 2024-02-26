@@ -1,6 +1,10 @@
 package com.majornick.loadbalancer.servlets;
 
 
+import com.majornick.loadbalancer.utils.CircularQueue;
+import models.Server;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +16,13 @@ import java.io.IOException;
 public class GlobalServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletResponse.getWriter().write("salami");
+        ServletContext context = httpServletRequest.getServletContext();
+        CircularQueue<Server> queue = (CircularQueue<Server>) context.getAttribute("queue");
+        if (queue.peek() == null) {
+            return;
+        }
+        if (!queue.peek().testServer()) {
+            httpServletResponse.sendRedirect(queue.pollAndReturn().toString());
+        }
     }
 }
