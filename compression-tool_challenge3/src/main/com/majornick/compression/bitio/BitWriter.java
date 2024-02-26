@@ -29,4 +29,5 @@ public class BitWriter {
         bufferedByte <<= (7 - currentShift);
         byteWriter.write(bufferedByte);
     }
+
 }

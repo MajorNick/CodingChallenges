@@ -1,15 +1,14 @@
 package main.com.majornick.compression;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Decompressor {
     private final String filename;
     private String extension;
+    private long bytesBeforeContent;
 
     public Decompressor(String filename) {
         this.filename = filename;
@@ -22,14 +21,17 @@ public class Decompressor {
 
     private void process(String filename) throws IOException {
         Map<Integer, String> codes = readExtensionAndCodes(filename);
-        System.out.println(codes);
+        readAndEncode(codes, String.format("%s.%s", filename.substring(0, filename.lastIndexOf('.')), extension));
     }
+
 
     private Map<Integer, String> readExtensionAndCodes(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         HashMap<Integer, String> codes = new HashMap<>();
+        long bytes = 0;
         while (true) {
             String line = reader.readLine();
+            bytes += line.getBytes().length;
             int dot = line.indexOf(':');
             String left = line.substring(0, dot - 1);
             String right = line.substring(dot + 2);
@@ -44,7 +46,15 @@ public class Decompressor {
             }
         }
         reader.close();
+        bytesBeforeContent = bytes;
         return codes;
+    }
+
+    private void readAndEncode(Map<Integer, String> codes, String newFilename) throws IOException {
+        FileWriter fileWriter = new FileWriter(newFilename);
+        FileInputStream fileInputStream = new FileInputStream(filename);
+
+        fileWriter.close();
     }
 
 
