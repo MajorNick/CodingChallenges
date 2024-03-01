@@ -12,10 +12,7 @@ public class CircularQueue<E> extends ArrayBlockingQueue<E> {
         super(capacity);
     }
 
-    public CircularQueue(int capacity, E... elems) {
-        super(capacity);
-        super.addAll(Arrays.asList(elems));
-    }
+
 
     public E pollAndReturn() {
         E e = super.poll();

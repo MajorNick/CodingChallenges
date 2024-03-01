@@ -9,7 +9,7 @@ import java.net.URL;
 
 @Getter
 public class Server {
-    public URL url;
+    private final URL url;
 
 
     public Server(URL url) {
