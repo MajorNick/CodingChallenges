@@ -1,11 +1,20 @@
 package com.majornick.loadbalancer.utils;
 
+import com.majornick.loadbalancer.models.Server;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class CircularQueue<E> extends ArrayBlockingQueue<E> {
     public CircularQueue(int capacity) {
         super(capacity);
+    }
+
+    public CircularQueue(int capacity, E... elems) {
+        super(capacity);
+        super.addAll(Arrays.asList(elems));
     }
 
     public E pollAndReturn() {

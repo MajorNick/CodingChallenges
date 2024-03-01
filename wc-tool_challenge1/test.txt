@@ -916,7 +916,7 @@ war was held by Wei on the eve of a far-reaching campaign, he had all
 his calculations ready; those generals who made use of them did not
 lose one battle in ten; those who ran counter to them in any particular
 saw their armies incontinently beaten and put to flight." Ts’ao Kung’s
-notes on Sun Tzŭ, models of austere brevity, are so thoroughly
+notes on Sun Tzŭ, com.majornick.loadbalancer.models of austere brevity, are so thoroughly
 characteristic of the stern commander known to history, that it is hard
 indeed to conceive of them as the work of a mere _littérateur_.
 Sometimes, indeed, owing to extreme compression, they are scarcely

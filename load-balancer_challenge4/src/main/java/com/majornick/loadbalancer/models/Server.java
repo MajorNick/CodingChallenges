@@ -1,4 +1,4 @@
-package models;
+package com.majornick.loadbalancer.models;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
