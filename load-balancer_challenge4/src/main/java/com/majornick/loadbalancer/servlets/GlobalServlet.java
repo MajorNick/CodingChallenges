@@ -56,10 +56,6 @@ public class GlobalServlet extends HttpServlet {
     }
 
 
-    public static ArrayBlockingQueue<Server> getQueue() {
-        return queue;
-    }
-
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         if (queue.peek() == null) {
