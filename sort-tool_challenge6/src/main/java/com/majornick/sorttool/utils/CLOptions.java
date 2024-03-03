@@ -8,7 +8,7 @@ public class CLOptions {
     @CommandLine.Option(names = {"--reversed","-r"},defaultValue = "false")
     public  boolean reversed;
 
-    @CommandLine.Option(names = "-sort",defaultValue = "QUICK")
+    @CommandLine.Option(names = "-sort",defaultValue = "MERGE")
     public SortType sortType;
 
 }

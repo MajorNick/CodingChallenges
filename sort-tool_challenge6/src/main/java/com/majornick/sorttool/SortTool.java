@@ -1,6 +1,7 @@
 package com.majornick.sorttool;
 
 import com.majornick.sorttool.utils.SortType;
+import com.majornick.sorttool.utils.Sorts;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,14 +30,13 @@ public class SortTool {
             if (unique) {
                 lines = bufferedReader.lines().distinct().collect(Collectors.toList());
             } else {
-                lines = bufferedReader.lines().toList();
+                lines = bufferedReader.lines().collect(Collectors.toList());
             }
             sortList(lines);
             if (reversed) {
                 Collections.reverse(lines);
             }
-
-
+            lines.forEach(System.out::println);
         } catch (IOException e) {
             String currentPath = new java.io.File(".").getCanonicalPath();
             System.out.println("Current dir:" + currentPath);
@@ -45,31 +45,14 @@ public class SortTool {
 
     private void sortList(List<String> lines) {
         switch (sortType) {
-            case HEAP -> heapSort(lines);
-            case QUICK -> quickSort(lines);
-            case MERGE -> mergeSort(lines);
-            case RADIX -> radixSort(lines);
-            case RANDOM -> randomSort(lines);
+            case HEAP -> Sorts.heapSort(lines);
+            case QUICK -> Sorts.quickSort(lines);
+            case MERGE -> Sorts.mergeSort(lines);
+            case RADIX -> Sorts.radixSort(lines);
+            case RANDOM -> Sorts.randomSort(lines);
         }
     }
 
-    private void radixSort(List<String> lines) {
-    }
-
-    private void mergeSort(List<String> lines) {
-
-    }
-
-    private void quickSort(List<String> lines) {
-
-    }
-
-    private void randomSort(List<String> lines) {
-
-    }
-
-    private void heapSort(List<String> lines) {
-    }
 
 
 }

@@ -11,10 +11,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         CLOptions options = new CLOptions();
         CommandLine cmd = new CommandLine(options);
-        cmd.registerConverter(SortType.class,new SortType.SortTypeConverter());
+        cmd.registerConverter(SortType.class, new SortType.SortTypeConverter());
         cmd.parseArgs(args);
 
-        SortTool sortTool = new SortTool("./words.txt",options.sortType,options.reversed, options.uniq);
+        SortTool sortTool = new SortTool("./words.txt", options.sortType, options.reversed, options.uniq);
         sortTool.process();
     }
 }
