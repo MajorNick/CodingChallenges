@@ -52,14 +52,48 @@ public class Sorts {
     }
 
     public static void heapSort(List<String> lines) {
+
     }
 
-    public static void quickSort(List<String> lines) {
-    }
 
     public static void radixSort(List<String> lines) {
     }
 
-    public static void randomSort(List<String> lines) {
+    public static <E extends Comparable<? super E>> void randomSort(List<E> list) {
+
     }
+
+    public static <E extends Comparable<? super E>> void quickSort(List<E> list) {
+        quickSort(list, 0, list.size() - 1);
+    }
+
+    private static <E extends Comparable<? super E>> void quickSort(List<E> list, int l, int r) {
+        if (r > l) {
+            int pi = partition(list, l, r);
+            quickSort(list, l, pi - 1);
+            quickSort(list, pi + 1, r);
+        }
+    }
+
+    private static <E extends Comparable<? super E>> int partition(List<E> list, int l, int r) {
+        E pivot = list.get(r);
+        int i = l - 1;
+
+        for (int j = l; j <= r - 1; j++) {
+
+            if (pivot.compareTo(list.get(j)) > 0) {
+                i++;
+                swap(list, i, j);
+            }
+        }
+        swap(list, i + 1, r);
+        return (i + 1);
+    }
+
+    private static <E extends Comparable<? super E>> void swap(List<E> list, int i, int j) {
+        E tmp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, tmp);
+    }
+
 }
