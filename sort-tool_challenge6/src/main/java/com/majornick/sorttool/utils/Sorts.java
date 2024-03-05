@@ -1,7 +1,9 @@
 package com.majornick.sorttool.utils;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.random.RandomGenerator;
 
 public class Sorts {
     public static <E extends Comparable<? super E>> void mergeSort(List<E> list) {
@@ -51,16 +53,53 @@ public class Sorts {
         }
     }
 
-    public static void heapSort(List<String> lines) {
+    public static <E extends Comparable<? super E>> void heapSort(List<E> list) {
+        int n = list.size();
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(list, n, i);
+        }
 
+        for (int i = n - 1; i > 0; i--) {
+            swap(list, 0, i);
+            heapify(list, i, 0);
+        }
+    }
+
+    private static <E extends Comparable<? super E>> void heapify(List<E> list, int n, int i) {
+        int largest = i;
+        int l = 2 * i + 1;
+        int r = 2 * i + 2;
+        if (l < n && list.get(l).compareTo(list.get(largest)) > 0) {
+            largest = l;
+        }
+        if (r < n && list.get(r).compareTo(list.get(largest)) > 0) {
+            largest = r;
+        }
+
+        if (largest != i) {
+            swap(list, i, largest);
+            heapify(list, n, largest);
+        }
     }
 
 
-    public static void radixSort(List<String> lines) {
+    public static <E extends Comparable<? super E>> void radixSort(List<E> list) {
+
     }
 
     public static <E extends Comparable<? super E>> void randomSort(List<E> list) {
-
+        list.sort((a, b) -> {
+            RandomGenerator random = new SecureRandom();
+            int hash1 = random.nextInt();
+            int hash2 = random.nextInt();
+            if (hash1 < hash2) {
+                return -1;
+            } else if (hash1 > hash2) {
+                return 1;
+            } else {
+                return a.compareTo(b);
+            }
+        });
     }
 
     public static <E extends Comparable<? super E>> void quickSort(List<E> list) {

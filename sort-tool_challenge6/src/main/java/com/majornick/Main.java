@@ -14,7 +14,7 @@ public class Main {
         cmd.registerConverter(SortType.class, new SortType.SortTypeConverter());
         cmd.parseArgs(args);
 
-        SortTool sortTool = new SortTool("./words.txt", options.sortType, options.reversed, options.uniq);
+        SortTool sortTool = new SortTool(options.fileName, options.sortType, options.reversed, options.uniq);
         sortTool.process();
     }
 }
