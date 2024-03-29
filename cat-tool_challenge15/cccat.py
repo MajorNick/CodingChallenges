@@ -2,7 +2,8 @@ import sys
 from cccat_core import Cccat
 
 predefined_args = {
-    "-b" : 1
+    "-b" : 1,
+    "-n" : 1
 }
 
 def getFilenameAndArgs(args):
