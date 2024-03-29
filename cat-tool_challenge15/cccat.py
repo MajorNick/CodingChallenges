@@ -1,23 +1,25 @@
 import sys
+from cccat_core import Cccat
 
+predefined_args = {
+    "-b" : 1
+}
 
 def getFilenameAndArgs(args):
-    filename = args[0]
+    filenames = []
     arguments = {}
-    if(len(args)>1):
-        for arg in args[1:]:
-            arguments[arg] = 1
+    if(len(args)>0):
+        for arg in args:
+            if(arg.startswith('-')):
+                arguments[arg] = 1
+            else:
+                filenames.append(arg)
+    return filenames,arguments
 
-    return filename,arguments
 
-from cccat_core import Cccat
 args = sys.argv[1:]
-
-if len(args) == 0:
-    print("No arguments provided")
-else:
-    filename,arguments = getFilenameAndArgs(args)
-    Cccat(filename,arguments)
+filenames,arguments = getFilenameAndArgs(args)
+Cccat(filenames,arguments, len(args) == 0 or args[0].startswith('-') )
 
 
 
