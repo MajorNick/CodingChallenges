@@ -102,4 +102,39 @@ public class RedisServerTest {
         assertEquals(expected, actual);
     }
 
+    // Bulk Errors
+
+    @Test
+    public void serverBulkErrorMessageDeserializationTest() {
+        Message expected = new Message(Type.BULK_ERROR, " SYNTAX invalid syntax");
+        Message actual = RedisServer.deserializeMessage("!21\r\n SYNTAX invalid syntax\r\n");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void serverBulkErrorMessageSerializationTest() {
+        Message expected = new Message(Type.BULK_ERROR, " SYNTAX invalid syntax");
+        String serialized = RedisServer.serializeMessage(expected);
+        Message actual = RedisServer.deserializeMessage(serialized);
+        assertEquals(expected, actual);
+    }
+
+    // Simple Error
+
+    @Test
+    public void serverSimpleErrorMessageSerializationTest() {
+        Message expected = new Message(Type.SIMPLE_STRING, "Error message");
+        String serialized = RedisServer.serializeMessage(expected);
+        Message actual = RedisServer.deserializeMessage(serialized);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void serverSimpleErrorgMessageDeserializationTest() {
+        Message expected = new Message(Type.SIMPLE_STRING, "Error message");
+        Message actual = RedisServer.deserializeMessage("-Error message\r\n");
+        assertEquals(expected, actual);
+    }
+
+
 }

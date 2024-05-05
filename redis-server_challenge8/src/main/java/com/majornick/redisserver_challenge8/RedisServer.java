@@ -11,25 +11,31 @@ public class RedisServer {
         }
         Message result;
         switch (message.charAt(0)) {
-            case '$' -> result = deserializeBulkString(message);
+            case '$' -> result = deserializeBulkMessages(message, Type.BULK_STRING);
             case '+' -> result = deserializeSimpleString(message);
+            case '!' -> result = deserializeBulkMessages(message, Type.BULK_ERROR);
+            case '-' -> result = deserializeSimpleError(message);
+
             default -> result = null;
         }
         return result;
     }
 
+
     public static String serializeMessage(Message message) {
         String res = null;
         switch (message.getType()) {
-            case BULK_STRING -> res = serializeBulkString(message);
+            case BULK_STRING -> res = serializeBulkMessages(message, '$');
             case SIMPLE_STRING -> res = serilizeSimpleString(message);
+            case BULK_ERROR -> res = serializeBulkMessages(message, '!');
+            case SIMPLE_ERROR -> res = serializeSimpleError(message);
         }
         return res;
     }
 
-    private static String serializeBulkString(Message message) {
+    private static String serializeBulkMessages(Message message, char type) {
         StringBuilder res = new StringBuilder();
-        res.append("$");
+        res.append(type);
         if (message.getContent() == null) {
             return res.append(-1)
                     .append(TERMINATOR)
@@ -42,9 +48,10 @@ public class RedisServer {
                 .toString();
     }
 
-    private static Message deserializeBulkString(String message) {
+
+    private static Message deserializeBulkMessages(String message, Type type) {
         Message result = new Message();
-        result.setType(Type.BULK_STRING);
+        result.setType(type);
         int grandLine = message.indexOf(TERMINATOR);
         int len = Integer.parseInt(message.substring(1, grandLine));
         if (len == -1) {
@@ -56,10 +63,20 @@ public class RedisServer {
     }
 
     private static String serilizeSimpleString(Message message) {
-        StringBuilder res = new StringBuilder();
-        return res.append("+").append(message.getContent()).append(TERMINATOR).toString();
+        return "+" + message.getContent() + TERMINATOR;
     }
     private static Message deserializeSimpleString(String message) {
+        Message result = new Message();
+        result.setType(Type.SIMPLE_STRING);
+        result.setContent(message.substring(1, message.lastIndexOf(TERMINATOR)));
+        return result;
+    }
+
+    private static String serializeSimpleError(Message message) {
+        return "-" + message.getContent() + TERMINATOR;
+    }
+
+    private static Message deserializeSimpleError(String message) {
         Message result = new Message();
         result.setType(Type.SIMPLE_STRING);
         result.setContent(message.substring(1, message.lastIndexOf(TERMINATOR)));
