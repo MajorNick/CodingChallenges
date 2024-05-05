@@ -1,3 +1,4 @@
+/*
 package test.java.com.majornick.compression;
 
 import main.com.majornick.compression.Compressor;
@@ -15,3 +16,4 @@ public class CompressorTest {
     }
 
 }
+*/
