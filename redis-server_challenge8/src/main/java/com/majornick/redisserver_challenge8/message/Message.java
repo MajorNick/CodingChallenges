@@ -1,15 +1,18 @@
 package com.majornick.redisserver_challenge8.message;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Message {
     private Type type;
     private String content;
+    private List<Message> messages;
 
     public Message(Type type, String content) {
         this.type = type;
         this.content = content;
     }
+
 
     public Message() {
     }
@@ -28,6 +31,14 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     @Override
