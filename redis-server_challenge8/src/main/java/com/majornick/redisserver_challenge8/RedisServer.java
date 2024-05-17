@@ -11,11 +11,17 @@ public class RedisServer {
     public RedisServer(int port) {
         try (ServerSocket socket = new ServerSocket(port)) {
             while (true) {
+
                 new ClientHandler(socket.accept()).run();
+
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) {
+        new RedisServer(6379);
     }
 
 

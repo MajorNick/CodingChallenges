@@ -15,6 +15,11 @@ public class Message {
     private String content;
     private List<Message> messages;
 
+    public Message(Type type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

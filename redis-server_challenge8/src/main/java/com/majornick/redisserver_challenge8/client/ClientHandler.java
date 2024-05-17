@@ -21,28 +21,33 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter printer = new PrintWriter(socket.getOutputStream());) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] args = line.split(" ");
-
+            while (true) {
+                int k = reader.read();
+                System.out.println(k);
+                if (k == -1) break;
+                sb.append((char) k);
             }
+            execCommand(sb.toString(), new PrintWriter(socket.getOutputStream()));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
-
     }
 
 
-    private void execCommand(String[] args, PrintWriter printer) {
-        String cmd = args[0];
+    private void execCommand(String args, PrintWriter printer) {
+        String[] splitted = args.split(" ");
+        String cmd = splitted[0];
         cmd = cmd.toUpperCase();
+        System.out.println(args);
         switch (cmd) {
             case "PING" -> printer.write("PONG");
-            case "ECHO" -> printer.write(args[1]);
-            case "SET" -> printer.write(RespDeSerializer.serializeMessage(executeSetCmd(args)));
-            case "GET" -> printer.write(RespDeSerializer.serializeMessage(executeGetCmd(args)));
+            case "ECHO" -> printer.write(splitted[1]);
+            case "SET" -> printer.write(RespDeSerializer.serializeMessage(executeSetCmd(splitted)));
+            case "GET" -> printer.write(RespDeSerializer.serializeMessage(executeGetCmd(splitted)));
         }
     }
 
